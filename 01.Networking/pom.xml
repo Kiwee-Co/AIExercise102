@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+        <modelVersion>4.0.0</modelVersion>
+
+        <parent>
+                <groupId>exercise.coding.kiwee.ai</groupId>
+                <artifactId>coding.parent</artifactId>
+                <version>0.0.2-SNAPSHOT</version>
+        </parent>
+
+        <artifactId>01.Networking</artifactId>
+        <packaging>jar</packaging>
+
+        <name>01.Networking</name>
+
+        <dependencies>
+                <!-- apache -->
+                <dependency>
+                        <groupId>org.apache.commons</groupId>
+                        <artifactId>commons-lang3</artifactId>
+                </dependency>
+                <dependency>
+                        <groupId>exercise.coding.kiwee.ai</groupId>
+                        <artifactId>shared</artifactId>
+                </dependency>
+
+                <!-- test -->
+                <dependency>
+                        <groupId>org.junit.jupiter</groupId>
+                        <artifactId>junit-jupiter-api</artifactId>
+                        <scope>test</scope>
+                </dependency>
+                <dependency>
+                        <groupId>org.junit.jupiter</groupId>
+                        <artifactId>junit-jupiter-engine</artifactId>
+                        <scope>test</scope>
+                </dependency>
+
+        </dependencies>
+
+</project>
