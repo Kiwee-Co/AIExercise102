@@ -27,7 +27,7 @@ import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 public class Peer {
-	private static final int TIMEOUT = 1000;
+	private static final int TIMEOUT = 60*60;
 	private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm:ss");
 	private static final int MAX_WIDTH = 60;
 	private static final String SEPARATOR = "-".repeat(MAX_WIDTH);
