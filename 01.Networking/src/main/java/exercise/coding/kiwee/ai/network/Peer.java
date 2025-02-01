@@ -197,7 +197,7 @@ public class Peer {
 			Scanner scanner = new Scanner(System.in);
 			String input;
 			while (true) {
-				System.out.print("> ");
+				System.out.print("➤ ");
 				input = scanner.nextLine();
 				out.println(input);
 				if (input.equalsIgnoreCase("/exit"))
