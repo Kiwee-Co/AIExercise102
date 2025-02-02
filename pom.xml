@@ -12,10 +12,11 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
+		<build.plugins.plugin.version>3.13.0</build.plugins.plugin.version>
 		<commons-collections4>4.4</commons-collections4>
 		<commons-lang3>3.12.0</commons-lang3>
 
+		<jackson-version>2.18.2</jackson-version>
 		<pico-cli.version>4.7.4</pico-cli.version>
 
 		<!-- maven build plugins -->
@@ -26,13 +27,20 @@
 		<maven-dependency-plugin.version>3.6.0</maven-dependency-plugin.version>
 
 		<!-- testing -->
-		<junit.version>5.9.3</junit.version>
+		<junit.version>5.10.0</junit.version>
 
 		<native.maven.plugin.version>0.9.23</native.maven.plugin.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>com.fasterxml.jackson</groupId>
+				<artifactId>jackson-bom</artifactId>
+				<version>${jackson-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 
 			<!-- apache commons -->
 			<dependency>
@@ -85,25 +93,6 @@
 			<plugins>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>${maven-compiler.version}</version>
-					<configuration>
-						<annotationProcessorPaths>
-							<path>
-								<groupId>info.picocli</groupId>
-								<artifactId>picocli-codegen</artifactId>
-								<version>${pico-cli.version}</version>
-							</path>
-						</annotationProcessorPaths>
-						<compilerArgs>
-							<arg>
-								-Aproject=${project.groupId}/${project.artifactId}</arg>
-						</compilerArgs>
-					</configuration>
-				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-source-plugin</artifactId>
 					<version>${maven-source.version}</version>
 				</plugin>
@@ -113,17 +102,36 @@
 					<version>${maven-dependency-plugin.version}</version>
 				</plugin>
 			</plugins>
-
 		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${build.plugins.plugin.version}</version>
 				<configuration>
 					<source>${maven.compiler.source}</source>
 					<target>${maven.compiler.target}</target>
+					<release>${maven.compiler.source}</release>
+					<compilerArgs>
+					</compilerArgs>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
