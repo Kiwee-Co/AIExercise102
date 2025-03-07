@@ -1,6 +1,10 @@
 package exercise.coding.kiwee.ai.turnbased;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.Arrays;
+import java.util.Enumeration;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -16,6 +20,7 @@ public class TicTacToeGame extends Application {
 	private char[] board = new char[9];
 	private char currentPlayer; // Set by START message
 	private Label statusLabel;
+	private Label ipLabel;
 	private Button[] buttons = new Button[9];
 	private NetworkHandler networkHandler;
 	private boolean isHost;
@@ -32,6 +37,8 @@ public class TicTacToeGame extends Application {
 		VBox root = new VBox(10);
 		GridPane grid = new GridPane();
 		statusLabel = new Label("Enter your name, IP, and port to connect or host");
+        ipLabel = new Label("IP Address: " + getPrivateIpAddress());
+
 
 		for (int i = 0; i < 9; i++) {
 			final int pos = i;
@@ -43,7 +50,7 @@ public class TicTacToeGame extends Application {
 		}
 
 		TextField nameField = new TextField("Player");
-		TextField ipField = new TextField("localhost");
+		TextField ipField = new TextField("your opponent's IP Address");
 		TextField portField = new TextField("5000");
 		hostButton = new Button("Host Game");
 		joinButton = new Button("Join Game");
@@ -51,12 +58,31 @@ public class TicTacToeGame extends Application {
 		hostButton.setOnAction(e -> startHost(nameField.getText(), portField.getText()));
 		joinButton.setOnAction(e -> startClient(nameField.getText(), ipField.getText(), portField.getText()));
 
-		root.getChildren().addAll(statusLabel, grid, nameField, ipField, portField, hostButton, joinButton);
+		root.getChildren().addAll(statusLabel, ipLabel, grid, nameField, ipField, portField, hostButton, joinButton);
 
 		Scene scene = new Scene(root, 300, 400);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Tic-Tac-Toe");
 		primaryStage.show();
+	}
+
+	private String getPrivateIpAddress() {
+		try {
+			Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+			while (interfaces.hasMoreElements()) {
+				NetworkInterface iface = interfaces.nextElement();
+				Enumeration<InetAddress> addresses = iface.getInetAddresses();
+				while (addresses.hasMoreElements()) {
+					InetAddress addr = addresses.nextElement();
+					if (!addr.isLoopbackAddress() && addr.isSiteLocalAddress()) {
+						return addr.getHostAddress();
+					}
+				}
+			}
+		} catch (SocketException e) {
+			return "Unknown";
+		}
+		return "Unknown";
 	}
 
 	private void startHost(String name, String portStr) {
